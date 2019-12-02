@@ -163,6 +163,47 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return null;
     }
 
+
+    //getParent();
+    Node aux;
+
+    public Value getParent(Key key) {
+        if (key == null) throw new IllegalArgumentException("argument to get() is null");
+        return getParent(root, key);
+    }
+
+    // value associated with the given key in subtree rooted at x; null if no such key
+    private Value getParent(Node x, Key key) {
+        while (x != null) {
+            int cmp = key.compareTo(x.key);
+            if( key.compareTo(root.key) == 0) {
+                return null;
+            }
+            if      (cmp < 0) {
+                aux = x; 
+                x = x.left;
+                }
+            else if (cmp > 0) 
+            {
+                aux = x;
+                 x = x.right;
+                 }
+            else       
+            {      
+                 return aux.val;
+            }
+        }
+        return null;
+    }
+
+    //getParent();
+
+
+
+
+
+
+
     /**
      * Does this symbol table contain the given key?
      * @param key the key
