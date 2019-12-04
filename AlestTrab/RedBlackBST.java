@@ -15,17 +15,16 @@ import java.util.NoSuchElementException;
 
 public class RedBlackBST<Key extends Comparable<Key>, Value> {
 
-    private static final boolean RED   = true;
-    private static final boolean BLACK = false;
 
-    private Node root;     // root of the BST
+    
 
     // BST helper node data type
-    private class Node {
+    private final class Node {
         private Key key;           // key
         private Value val;         // associated data
-        private Node left, right;  // links to left and right subtrees
-        private boolean color;     // color of parent link
+        public Node left, right;   // nodos da esquerda e direita
+        public Node father;		  // nodo pai
+        public boolean color;     // color of parent link
         private int size;          // subtree count
 
         public Node(Key key, Value val, boolean color, int size) {
@@ -36,8 +35,17 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         }
     }
 
+    // Atributos da arvore binaria
+    private Node root;     // raiz da arvore
+    private static final boolean RED   = true;
+    private static final boolean BLACK = false;
+    //private Node nil = new Nodo //nodo nill é essencial para o funcionamento do algoritmo, precisa ser instanciado
+    private int count; //total de elementos da arvore
+   
    
     public RedBlackBST() {
+    	count = 0;
+    	//root = nil;
     }
         
     
@@ -48,8 +56,39 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @param key, é a chave que guarda um valor
      * @param val, valor guardado na chave
      */
+    
+    /**
+     * Limpa a arvore.
+     */
+    public void clear() {
+        count = 0;
+        root = null;
+    }
+    
+    /**
+     * @return True caso a arvore esteja vazia, false caso nao esteja;
+     */
+    public boolean isEmpty() {
+        return (root == null);
+    }
+    
+    /**
+     * Verifica se a arvore contem a chave especificada;
+     * @param key 
+     * @return True caso a chave esteja na arvore, falso caso nao esteja;
+     */
+    public boolean contains(Key key) {
+        return get(key) != null;
+    }
+    
+    /**
+     * Adiciona novos nodos a arvore, caso o elemento passado seja null, lança exceção.
+     * @param key, é a chave que guarda um valor
+     * @param val, valor guardado na chave
+     */
     public void add(Key key, Value val) {
-        if (key == null || val == null) throw new IllegalArgumentException("first argument to insert() is null");
+        if (key == null || val == null) 
+        	throw new IllegalArgumentException("Por favor, insira uma string diferente de null");
 
         root = addAux(root, key, val);
         root.color = BLACK;
@@ -97,14 +136,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
          }
          return null;
      }
-    /**
-     * Verifica se a arvore contem a chave especificada;
-     * @param key 
-     * @return True caso a chave esteja na arvore, falso caso nao esteja;
-     */
-    public boolean contains(Key key) {
-        return get(key) != null;
-    }
+   
      /**
      * Devolve o valor respectivo a chave especificada;
      * @param key 
@@ -146,13 +178,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return x.size;
     } 
      /**
-     * 
-     * @return True caso a arvore esteja vazia, false caso nao esteja;
-     */
-    public boolean isEmpty() {
-        return root == null;
-    }
-
+ 
 
              //METODOS RETIRADOS DAS AULAS E ADAPTADOS PARA A ARVORE RUBRO NEGRA;
    /***************************************************************************/
