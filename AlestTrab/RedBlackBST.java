@@ -5,12 +5,9 @@ import java.util.NoSuchElementException;
 
 
 /** Arvore Rubro Negra adaptada para TAD; 
- *  Lucas Garcia e Suane Vallim;
- * 
- * 
- * Comentario dos autores no fim da classe.
-*  @author Robert Sedgewick
-*  @author Kevin Wayne
+ 
+*  @author Lucas Garcia
+*  @author Suane Vallim
 */
 
 public class RedBlackBST<Key extends Comparable<Key>, Value> {
@@ -81,6 +78,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return get(key) != null;
     }
     
+
+    
     /**
      * Adiciona novos nodos a arvore, caso o elemento passado seja null, lança exceção.
      * @param key, é a chave que guarda um valor
@@ -96,21 +95,25 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
     /** Metodo que faz a inserção e faz as rotações necessarias para a arvore se manter balanceada
     */
-    private Node addAux(Node h, Key key, Value val) { 
-        if (h == null) return new Node(key, val, RED, 1);
+    private Node addAux(Node n, Key key, Value val) { 
+        if (n == null) 
+        	return new Node(key, val, RED, 1);
 
-        int cmp = key.compareTo(h.key);
-        if      (cmp < 0) h.left  = addAux(h.left,  key, val); 
-        else if (cmp > 0) h.right = addAux(h.right, key, val); 
-        else              h.val   = val;
+        int cmp = key.compareTo(n.key);
+        if      (cmp < 0) n.left  = addAux(n.left,  key, val); 
+        else if (cmp > 0) n.right = addAux(n.right, key, val); 
+        else              n.val   = val;
 
-        // fix-up any right-leaning links
-        if (isRed(h.right) && !isRed(h.left))      h = rotateLeft(h);
-        if (isRed(h.left)  &&  isRed(h.left.left)) h = rotateRight(h);
-        if (isRed(h.left)  &&  isRed(h.right))     flipColors(h);
-        h.size = sizeAux(h.left) + sizeAux(h.right) + 1;
-
-        return h;
+        //balanceamento da arvore - ta muito inelegivel, socorro
+        if (isRed(n.right) && !isRed(n.left))  
+        	n = rotateLeft(n);
+        
+        if (isRed(n.left)  &&  isRed(n.left.left)) 
+        	n = rotateRight(n);
+        if (isRed(n.left)  &&  isRed(n.right))     
+        	flipColors(n);
+        	n.size = sizeAux(n.left) + sizeAux(n.right) + 1;
+        	return n;
     }
     /**
      * 
@@ -143,18 +146,23 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * @return o valor respecitov a chave, caso a chave nao exista na tabela, retorna null;
      */
     public Value get(Key key) {
-        if (key == null) throw new IllegalArgumentException("argument to get() is null");
+        if (key == null) 
+        	throw new IllegalArgumentException("A referencia para este nodo é null");
         return getAux(root, key);
     }
     private Value getAux(Node x, Key key) {
         while (x != null) {
             int cmp = key.compareTo(x.key);
-            if      (cmp < 0) x = x.left;
-            else if (cmp > 0) x = x.right;
-            else              return x.val;
+            if      (cmp < 0) 
+            	x = x.left;
+            else if (cmp > 0) 
+            	x = x.right;
+            else              
+            	return x.val;
         }
         return null;
     }
+    
      /**
      * Retorna a altura da arvore.
      * @return altura da arvore, uma arvore com 1 nodo tem altura 0, se esta vazia retorna -1;
@@ -162,10 +170,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     public int height() {
         return heightAux(root);
     }
-    private int heightAux(Node x) {
-        if (x == null) return -1;
-        return 1 + Math.max(heightAux(x.left), heightAux(x.right));
+    private int heightAux(Node n) {
+        if (n == null) 
+        	return -1;
+        
+        return 1 + Math.max(heightAux(n.left), heightAux(n.right));
     }
+    
      /**
      * retona o total de nodos na arvore
      * @return o total de nodos da arvore;
@@ -292,21 +303,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         if (x == null) return false;
         return x.color == RED;
     }  
-    /**
-     * Removes the smallest key and associated value from the symbol table.
-     * @throws NoSuchElementException if the symbol table is empty
-     */
-    public void deleteMin() {
-        if (isEmpty()) throw new NoSuchElementException("BST underflow");
 
-        // if both children of root are black, set root to red
-        if (!isRed(root.left) && !isRed(root.right))
-            root.color = RED;
-
-        root = deleteMin(root);
-        if (!isEmpty()) root.color = BLACK;
-        // assert check();
-    }
 
     // delete the key-value pair with the minimum key rooted at h
     private Node deleteMin(Node h) { 
@@ -319,21 +316,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         h.left = deleteMin(h.left);
         return balance(h);
     }
-    /**
-     * Removes the largest key and associated value from the symbol table.
-     * @throws NoSuchElementException if the symbol table is empty
-     */
-    public void deleteMax() {
-        if (isEmpty()) throw new NoSuchElementException("BST underflow");
 
-        // if both children of root are black, set root to red
-        if (!isRed(root.left) && !isRed(root.right))
-            root.color = RED;
-
-        root = deleteMax(root);
-        if (!isEmpty()) root.color = BLACK;
-        // assert check();
-    }
 
     // delete the key-value pair with the maximum key rooted at h
     private Node deleteMax(Node h) { 
@@ -465,15 +448,18 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
 
     // restore red-black tree invariant
-    private Node balance(Node h) {
+    private Node balance(Node n) {
         // assert (h != null);
 
-        if (isRed(h.right))                      h = rotateLeft(h);
-        if (isRed(h.left) && isRed(h.left.left)) h = rotateRight(h);
-        if (isRed(h.left) && isRed(h.right))     flipColors(h);
+        if (isRed(n.right))                      
+        	n = rotateLeft(n);
+        if (isRed(n.left) && isRed(n.left.left)) 
+        	n = rotateRight(n);
+        if (isRed(n.left) && isRed(n.right))     
+        	flipColors(n);
 
-        h.size = sizeAux(h.left) + sizeAux(h.right) + 1;
-        return h;
+        n.size = sizeAux(n.left) + sizeAux(n.right) + 1;
+        return n;
     }
     /**
      * Returns the smallest key in the symbol table.
@@ -508,53 +494,4 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         else                 return max(x.right); 
     } 
 
-
-   
-/**
- *  The {@code BST} class represents an ordered symbol table of generic
- *  key-value pairs.
- *  It supports the usual <em>put</em>, <em>get</em>, <em>contains</em>,
- *  <em>delete</em>, <em>size</em>, and <em>is-empty</em> methods.
- *  It also provides ordered methods for finding the <em>minimum</em>,
- *  <em>maximum</em>, <em>floor</em>, and <em>ceiling</em>.
- *  It also provides a <em>keys</em> method for iterating over all of the keys.
- *  A symbol table implements the <em>associative array</em> abstraction:
- *  when associating a value with a key that is already in the symbol table,
- *  the convention is to replace the old value with the new value.
- *  Unlike {@link java.util.Map}, this class uses the convention that
- *  values cannot be {@code null}—setting the
- *  value associated with a key to {@code null} is equivalent to deleting the key
- *  from the symbol table.
- *  <p>
- *  It requires that
- *  the key type implements the {@code Comparable} interface and calls the
- *  {@code compareTo()} and method to compare two keys. It does not call either
- *  {@code equals()} or {@code hashCode()}.
- *  <p>
- *  This implementation uses a <em>left-leaning red-black BST</em>. 
- *  The <em>put</em>, <em>get</em>, <em>contains</em>, <em>remove</em>,
- *  <em>minimum</em>, <em>maximum</em>, <em>ceiling</em>, <em>floor</em>,
- *  <em>rank</em>, and <em>select</em> operations each take
- *  &Theta;(log <em>n</em>) time in the worst case, where <em>n</em> is the
- *  number of key-value pairs in the symbol table.
- *  The <em>size</em>, and <em>is-empty</em> operations take &Theta;(1) time.
- *  The <em>keys</em> methods take
- *  <em>O</em>(log <em>n</em> + <em>m</em>) time, where <em>m</em> is
- *  the number of keys returned by the iterator.
- *  Construction takes &Theta;(1) time.
- *  <p>
- *  For alternative implementations of the symbol table API, see {@link ST},
- *  {@link BinarySearchST}, {@link SequentialSearchST}, {@link BST},
- *  {@link SeparateChainingHashST}, {@link LinearProbingHashST}, and
- *  {@link AVLTreeST}.
- *  For additional documentation, see
- *  <a href="https://algs4.cs.princeton.edu/33balanced">Section 3.3</a> of
- *  <i>Algorithms, 4th Edition</i> by Robert Sedgewick and Kevin Wayne.
- *
- *  @author Robert Sedgewick
- *  @author Kevin Wayne
- */
- 
-
-   
 }
