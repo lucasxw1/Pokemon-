@@ -1,0 +1,22 @@
+.root{
+    -fx-background-image: url(./back3.jpg);
+    -fx-background-repeat: no-repeat;
+    -fx-background-size:  100% 100%;
+}
+
+ .my-text {
+    -fx-font-size: 50px;
+    -fx-font-family: "Arial Black";
+    -fx-fill: #ac2222;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+} 
+
+.button{
+    -fx-font-size: 13px;
+        -fx-background-color: linear-gradient(#dc9656, #ab4642);
+        -fx-background-radius: 10;
+        -fx-text-fill:#ebcdcd;
+        -fx-font-family: "Arial Black";
+        -fx-font-weight: bold;
+        -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
