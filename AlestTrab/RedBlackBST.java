@@ -47,6 +47,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
      * Coloca dentro da arvore o nodo chave-valor especificado, e sobreescreve o valor de algum node caso a key passada ja esteja na arvore.
      * @param key, é a chave que guarda um valor
      * @param val, valor guardado na chave
+     *  @Complexidade: O(log n);
      */
     public void add(Key key, Value val) {
         if (key == null || val == null) throw new IllegalArgumentException("first argument to insert() is null");
@@ -56,6 +57,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         // assert check();
     }
     /** Metodo que faz a inserção e faz as rotações necessarias para a arvore se manter balanceada
+     * 
     */
     private Node addAux(Node h, Key key, Value val) { 
         if (h == null) return new Node(key, val, RED, 1); // Condição de parada, caso chegue em um nodo vazio, adiciona o nodo lá;
@@ -74,7 +76,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return h; //retorna um root com a inserção;
     }
     /**
-     * 
+     *  @Complexidade: O(log n);
      * @param key 
      * @return O pai da chave especificada
      */
@@ -100,6 +102,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     /**
      * Verifica se a arvore contem a chave especificada;
      * @param key 
+     *  @Complexidade: O(log n);
      * @return True caso a chave esteja na arvore, falso caso nao esteja;
      */
     public boolean contains(Key key) {
@@ -125,6 +128,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
      /**
      * Retorna a altura da arvore.
+     *  @Complexidade: O(log n);
      * @return altura da arvore, uma arvore com 1 nodo tem altura 0, se esta vazia retorna -1;
      */
     public int height() {
@@ -136,9 +140,11 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
      /**
      * retona o total de nodos na arvore
+     *  @Complexidade: O(const) ;
      * @return o total de nodos da arvore;
      */
     public int size() {
+
         return sizeAux(root);
     }
     private int sizeAux(Node x) {
@@ -146,7 +152,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return x.size;
     } 
      /**
-     * 
+     * @Complexidade: O(const); 
      * @return True caso a arvore esteja vazia, false caso nao esteja;
      */
     public boolean isEmpty() {
@@ -158,6 +164,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
    /***************************************************************************/
     /**
      * Devolve um clone da arvore
+     * @Complexidade: O(n) 
      * @return um clone da arvore.
      */
     public RedBlackBST<Key, Value> clone(){
@@ -176,6 +183,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         positionsCentralAux(root, res);
         return res;
     }
+    //@Complexidade: O(n)
     private void positionsCentralAux(Node n, List<Node> res) {
         if (n != null) {
             positionsCentralAux(n.left, res);
@@ -185,6 +193,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
       /**
       * Retorna uma lista com todos os elementos da arvore na ordem de caminhamento central.
+      @Complexidade: O(n)
      * @return List<key> lista com os elementos da arvore
      */
     public List<Key> positionsCentral() {
@@ -197,6 +206,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     /** 
      * Retorna uma lista com todos os elementos da arvore na ordem de 
      * caminhamento pos-fixada.
+     * @Complexidade: O(n)
      * @return List<key> lista com os elementos da arvore
      */
     public List<Key> positionsPos() {
@@ -213,6 +223,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
     /**
      * Retorna uma lista com todos os elementos da arvore na ordem de caminhamento pre-fixada.
+     * @Complexidade: O(n)
      * @return List<key> lista com os elementos da arvore
      */
     public List<Key> positionsPre() {
@@ -229,6 +240,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     }
     /** 
      * Retorna uma lista com todos os elementos da arvore na ordem de 
+     * @Complexidade O(?) // perguntar para a professora;
      * caminhamento em largura. 
      * @return List<Key> com os elementos da arvore
      */  
@@ -260,7 +272,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
    /***************************************************************************/
 
 
- 
+    //@Complexidade O(const)
     // is node x red; false if x is null ?
     private boolean isRed(Node x) {
         if (x == null) return false;
@@ -269,6 +281,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     /**
      * Removes the smallest key and associated value from the symbol table.
      * @throws NoSuchElementException if the symbol table is empty
+     * @Complexidade O(log n);
      */
     public void deleteMin() {
         if (isEmpty()) throw new NoSuchElementException("BST underflow");
@@ -328,7 +341,8 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     /**
      * Removes the specified key and its associated value from this symbol table     
      * (if the key is in this symbol table).    
-     *
+     *  //@Complexidade O(n)
+
      * @param  key the key
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
