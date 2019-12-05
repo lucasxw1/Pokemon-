@@ -165,6 +165,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
     /**
      * Devolve um clone da arvore
      * @Complexidade: O(n) 
+     * Metodo feito e adaptado com a ajuda do colega Luis Lima;
      * @return um clone da arvore.
      */
     public RedBlackBST<Key, Value> clone(){
